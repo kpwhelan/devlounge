@@ -56,7 +56,7 @@ export default function EditAboutModal({ auth, toggleSetShowEditAboutModal, show
             {!isProcessing && <>
                 <FontAwesomeIcon onClick={toggleSetShowEditAboutModal} color="black" icon={faCircleXmark} opacity={0.5} size='2x' className='fixed right-2 top-2 hover:cursor-pointer' />
                 <Typography variant="h5" color="gray" className="mb-6 uppercase">
-                    Edit Links
+                    Edit About
                 </Typography>
 
                 <div className='flex justify-between bg-primary-color p-4'>

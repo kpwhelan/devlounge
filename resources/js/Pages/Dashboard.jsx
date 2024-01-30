@@ -44,7 +44,7 @@ export default function Dashboard({ auth }) {
                     <p>{auth.user.title}</p>
                 </div>
 
-                <div>
+                <div className='border-t-2 pl-1 pt-2'>
                     <div className='flex'>
                         <p className='text-gray-100 font-bold text-xl'>About</p>
                         <Typography onClick={toggleSetShowEditAboutModal} className="hover:cursor-pointer underline mx-auto text-lg hover:text-brown-50 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -52,10 +52,10 @@ export default function Dashboard({ auth }) {
                         </Typography>
                     </div>
 
-                    <p className='mb-4'>{auth.user.about_me}</p>
+                    <p className='mb-4 whitespace-pre-line'>{auth.user.about_me}</p>
                 </div>
 
-                <div>
+                <div className='border-t-2 pl-1 pt-2'>
                     <div className='flex'>
                         <p className='text-gray-100 font-bold text-xl'>Links</p>
                         <Typography onClick={toggleSetShowEditLinksModal} className="hover:cursor-pointer underline mx-auto text-lg hover:text-brown-50 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
