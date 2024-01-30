@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Foundation\Application;
@@ -38,6 +39,10 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('user')->middleware('auth')->group(function() {
     Route::patch('/update', [UsersController::class, 'update'])->name('update-user');
+});
+
+Route::prefix('community')->middleware('auth')->group(function() {
+    Route::get('/', [CommunityController::class, 'index'])->name('community');
 });
 
 require __DIR__.'/auth.php';
