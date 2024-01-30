@@ -2,7 +2,10 @@ import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
 
 /** @type {import('tailwindcss').Config} */
-export default {
+
+const withMT = require("@material-tailwind/react/utils/withMT");
+
+module.exports = withMT({
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
@@ -12,6 +15,10 @@ export default {
 
     theme: {
         extend: {
+            colors: {
+                'primary-color': '#404040',
+                'secondary-color': '#FFFFFF'
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
@@ -19,4 +26,4 @@ export default {
     },
 
     plugins: [forms],
-};
+});
