@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 export default function DevConnectPage({ auth }) {
+    console.log(auth.user.following)
     const { ref, inView, entry } = useInView({
         /* Optional options */
         threshold: 0,
@@ -45,7 +46,7 @@ export default function DevConnectPage({ auth }) {
         <div className="w-[60%] mx-auto h-screen">
             <div className="h-screen overflow-scroll" onScroll={handleScroll}>
                 {users.map(user => {
-                    return <UserPreviewCard user={user} />
+                    return <UserPreviewCard user={user} auth={auth} />
                 })}
             </div>
         </div>

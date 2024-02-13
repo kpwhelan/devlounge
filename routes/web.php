@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DevConnectController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Foundation\Application;
@@ -47,6 +48,10 @@ Route::prefix('user')->middleware('auth')->group(function() {
 
 Route::prefix('dev-connect')->middleware('auth')->group(function() {
     Route::get('/load-users', [DevConnectController::class, 'index'])->name('load-users');
+});
+
+Route::prefix('follow')->middleware('auth')->group(function() {
+    Route::post('/', [FollowController::class, 'followUser'])->name('follow-user');
 });
 
 require __DIR__.'/auth.php';
