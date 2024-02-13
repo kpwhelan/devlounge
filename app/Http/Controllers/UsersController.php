@@ -18,6 +18,7 @@ class UsersController extends Controller {
             // 'last_name'       => 'nullable|string|max:255',
             // 'email'           => ['nullable', 'string', 'email', 'max:255', Rule::unique('users')->ignore(Auth::user()->id, 'id')],
             'about_me'        => 'nullable|string',
+            'username'        => 'string|unique',
             // 'title'           => 'nullable|string',
             // 'facebook_url'    => 'nullable|string|url',
             'instagram_url'   => 'nullable|string|url',
