@@ -117,7 +117,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
                     <TextInput
                         id="email"
-                        // type="email"
+                        type="email"
                         className="mt-1 block w-full"
                         value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
@@ -137,7 +137,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         className="mt-1 block w-full"
                         value={data.username}
                         onChange={(e) => setData('username', e.target.value)}
-                        // required
+                        required
                         autoComplete="username"
                         disabled={isProcessing}
                     />
