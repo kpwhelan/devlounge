@@ -18,8 +18,15 @@ class ProfileUpdateRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
+            'title' => ['nullable', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
-            'username' => ['required', 'string', 'unique:users']
+            'username' => ['required', 'string', Rule::unique(User::class)->ignore($this->user()->id)],
+            'about_me' => ['nullable', 'string'],
+            'instagram_url' => ['nullable', 'string', 'url'],
+            'x_url' => ['nullable', 'string', 'url'],
+            'tiktok_url' => ['nullable', 'string', 'url'],
+            'linkedin_url' => ['nullable', 'string', 'url'],
+            'website_url' => ['nullable', 'string', 'url'],
         ];
     }
 }

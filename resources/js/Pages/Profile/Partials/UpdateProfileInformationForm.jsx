@@ -4,21 +4,50 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { Transition } from '@headlessui/react';
+import { useState } from 'react';
 
-export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }) {
+export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '', notifySuccess, notifyError }) {
     const user = usePage().props.auth.user;
+    const [ isProcessing, setIsProcessing]  = useState(false);
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+    const { data, setData, errors, isDirty } = useForm({
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,
-        username: user.username
+        username: user.username,
+        title: user.title,
     });
 
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route('profile.update'));
+        //if no changes were made, don't submit
+        if (!isDirty) return;
+
+        setIsProcessing(true);
+
+        axios.patch(route('profile.update'), {
+            first_name: data.first_name,
+            last_name: data.last_name,
+            email: data.email,
+            username: data.username,
+            title: data.title
+        })
+        .then(res => {
+            setIsProcessing(false);
+            notifySuccess(res.data.data.message);
+        })
+        .catch(error => {
+            setIsProcessing(false);
+
+            if (error.response.data.errors) {
+                for (const [key, value] of Object.entries(error.response.data.errors)) {
+                    errors[key] = value;
+                }
+            }
+
+            notifyError(error.response.data.message);
+        })
     };
 
     return (
@@ -43,6 +72,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         required
                         isFocused
                         autoComplete="first_name"
+                        disabled={isProcessing}
                     />
 
                     <InputError className="mt-2" message={errors.first_name} />
@@ -59,9 +89,27 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         required
                         isFocused
                         autoComplete="last_name"
+                        disabled={isProcessing}
                     />
 
                     <InputError className="mt-2" message={errors.last_name} />
+                </div>
+
+                <div>
+                    <InputLabel htmlFor="title" value="Title" />
+
+                    <TextInput
+                        id="title"
+                        className="mt-1 block w-full"
+                        value={data.title}
+                        onChange={(e) => setData('title', e.target.value)}
+                        required
+                        isFocused
+                        autoComplete="title"
+                        disabled={isProcessing}
+                    />
+
+                    <InputError className="mt-2" message={errors.title} />
                 </div>
 
                 <div>
@@ -69,12 +117,13 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
 
                     <TextInput
                         id="email"
-                        type="email"
+                        // type="email"
                         className="mt-1 block w-full"
                         value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
                         required
                         autoComplete="email"
+                        disabled={isProcessing}
                     />
 
                     <InputError className="mt-2" message={errors.email} />
@@ -88,8 +137,9 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                         className="mt-1 block w-full"
                         value={data.username}
                         onChange={(e) => setData('username', e.target.value)}
-                        required
+                        // required
                         autoComplete="username"
+                        disabled={isProcessing}
                     />
 
                     <InputError className="mt-2" message={errors.username} />
@@ -118,17 +168,17 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                 )}
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                    <PrimaryButton disabled={isProcessing}>Save</PrimaryButton>
 
-                    <Transition
+                    {/* <Transition
                         show={recentlySuccessful}
                         enter="transition ease-in-out"
                         enterFrom="opacity-0"
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600">Saved.</p>
-                    </Transition>
+                        <p className="text-sm text-white">Saved.</p>
+                    </Transition> */}
                 </div>
             </form>
         </section>

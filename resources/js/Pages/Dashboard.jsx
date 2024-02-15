@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { faUser} from '@fortawesome/free-regular-svg-icons';
 import { faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
 import EditAboutModal from '@/Components/Modals/EditAboutModal';
 import UploadProfilePictureModal from '@/Components/Modals/UploadProfilePictureModal';
+import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function Dashboard({ auth }) {
     const notifySuccess = () => toast.success("Successfully Updated!");
@@ -63,12 +64,17 @@ export default function Dashboard({ auth }) {
                     </div>
                 </div>
 
+                <div className='mb-4'>
+                    <Link href={route('profile.edit')}>
+                        <PrimaryButton>
+                            Update Profile Information
+                        </PrimaryButton>
+                    </Link>
+                </div>
+
                 <div className='pl-1 pt-2'>
                     <div className='flex justify-start items-center'>
                         <p className='text-gray-100 font-bold text-3xl'>Links</p>
-                        <Typography onClick={toggleSetShowEditLinksModal} className="hover:cursor-pointer underline ml-4 text-lg hover:text-brown-50 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            edit
-                        </Typography>
                     </div>
                     <p>Github: {auth.user.github_url}</p>
                     <p>Linkedin: {auth.user.linkedin_url}</p>
@@ -79,9 +85,6 @@ export default function Dashboard({ auth }) {
                 <div className=' pl-1 pt-8'>
                     <div className='flex justify-start items-center'>
                         <p className='text-gray-100 font-bold text-3xl'>About</p>
-                        <Typography onClick={toggleSetShowEditAboutModal} className="ml-4 hover:cursor-pointer underline text-lg hover:text-brown-50 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            edit
-                        </Typography>
                     </div>
 
                     <p className='mb-4 whitespace-pre-line'>{auth.user.about_me}</p>
