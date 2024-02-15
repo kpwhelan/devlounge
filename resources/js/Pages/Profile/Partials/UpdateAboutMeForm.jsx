@@ -1,0 +1,61 @@
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import TextInput from "@/Components/TextInput";
+import { useForm, usePage } from "@inertiajs/react";
+import PrimaryButton from "@/Components/PrimaryButton";
+import { Transition } from "@headlessui/react";
+
+export default function UpdateAboutMeForm({ className = '' }) {
+    const user = usePage().props.auth.user;
+
+    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+        about_me: user.about_me,
+    });
+
+    const submit = (e) => {
+        e.preventDefault();
+
+        patch(route('profile.update'));
+    }
+
+    return (
+        <section className={className}>
+            <header>
+                <h2 className="text-lg font-medium">Update About Me</h2>
+            </header>
+
+            <form onSubmit={submit} className="mt-6 space-y-6">
+                <div>
+                    <InputLabel htmlFor="about_me" value="About Me" />
+
+                    <textarea
+                        id="about_me"
+                        name="about_me"
+                        type='textarea'
+                        value={data.about_me}
+                        className="block h-72 overflow-scroll p-2.5 w-full text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500"
+                        autoComplete="about_me"
+
+                        onChange={(e) => setData('about_me', e.target.value)}
+                    />
+
+                    <InputError message={errors.about_me} className="mt-2" />
+                </div>
+
+                <div className="flex items-center gap-4">
+                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+
+                    <Transition
+                        show={recentlySuccessful}
+                        enter="transition ease-in-out"
+                        enterFrom="opacity-0"
+                        leave="transition ease-in-out"
+                        leaveTo="opacity-0"
+                    >
+                        <p className="text-sm text-gray-600">Saved.</p>
+                    </Transition>
+                </div>
+            </form>
+        </section>
+    );
+}

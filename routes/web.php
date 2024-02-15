@@ -44,6 +44,7 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('user')->middleware('auth')->group(function() {
     Route::patch('/update', [UsersController::class, 'update'])->name('update-user');
+    Route::post('/update-profile-picture', [UsersController::class, 'updateProfilePicture'])->name('update-profile-picture');
 });
 
 Route::prefix('dev-connect')->middleware('auth')->group(function() {

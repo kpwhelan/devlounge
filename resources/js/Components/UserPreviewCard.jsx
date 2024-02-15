@@ -4,6 +4,7 @@ import {
     CardFooter,
     Typography,
     Button,
+    Avatar,
   } from "@material-tailwind/react";
   import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
   import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -24,10 +25,7 @@ export default function UserPreviewCard({ user, auth }) {
         <Card className="mt-4 w-[80%]">
             <CardBody className="flex">
                 {user.profile_picture_url &&
-                        <img
-                        src={user.profile_picture_url}
-                        alt="user-profile-picture"
-                        />
+                        <Avatar src={auth.user.profile_picture_url} size="xxl"/>
                     }
 
                 {!user.profile_picture_url &&

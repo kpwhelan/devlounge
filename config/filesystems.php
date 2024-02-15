@@ -56,13 +56,19 @@ return [
             'throw' => false,
         ],
 
-        'do_spaces' => [
+        'digital-ocean' => [
             'driver' => 's3',
             'key' => env('DO_SPACES_KEY'),
             'secret' => env('DO_SPACES_SECRET'),
-            'endpoint' => env('DO_SPACES_ENDPOINT'),
-            'region' => env('DO_SPACES_REGION'),
-            'bucket' => env('DO_SPACES_BUCKET'),
+            'region' => env('DO_DEFAULT_REGION'),
+            'bucket' => env('DO_BUCKET'),
+            // 'folder' => env('DO_FOLDER'),
+            'cdn_endpoint' => env('DO_CDN_ENDPOINT'),
+            'bucket_endpoint' => true,
+            'url' => env('DO_ENDPOINT'),
+            'endpoint' => env('DO_ENDPOINT'),
+            'throw' => false,
+            'visibility' => 'public'
         ],
 
     ],

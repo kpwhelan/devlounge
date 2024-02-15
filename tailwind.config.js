@@ -17,10 +17,11 @@ module.exports = withMT({
         extend: {
             colors: {
                 'primary-color': '#404040',
-                'secondary-color': '#FFFFFF'
+                'secondary-color': '#FFFFFF',
+                'accent-color': '#5f7d54',
             },
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+            sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
         },
     },
