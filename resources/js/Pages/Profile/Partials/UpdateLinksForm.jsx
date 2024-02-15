@@ -6,11 +6,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXTwitter } from "@fortawesome/free-brands-svg-icons";
 import PrimaryButton from "@/Components/PrimaryButton";
 import { Transition } from "@headlessui/react";
+import axios from "axios";
+import { useState } from "react";
 
-export default function UpdateLinksForm({ className = '' }) {
+export default function UpdateLinksForm({ className = '', notifySuccess, notifyError }) {
     const user = usePage().props.auth.user;
+    const [isProcessing, setIsProcessing] = useState(false);
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+    const { data, setData, isDirty, errors } = useForm({
         github_url: user.github_url,
         linkedin_url: user.linkedin_url,
         x_url: user.x_url,
@@ -21,7 +24,30 @@ export default function UpdateLinksForm({ className = '' }) {
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route('profile.update'));
+        if (!isDirty) return;
+
+        axios.patch(route('profile.edit'), {
+            github_url: data.github_url,
+            linkedin_url: data.linkedin_url,
+            x_url: data.x_url,
+            instagram_url: data.instagram_url,
+            website_url: data.website_url
+        })
+        .then(res => {
+            setIsProcessing(false);
+            notifySuccess(res.data.data.message);
+        })
+        .catch(error => {
+            setIsProcessing(false);
+
+            if (error.response.data.errors) {
+                for (const [key, value] of Object.entries(error.response.data.errors)) {
+                    errors[key] = value;
+                }
+            }
+
+            notifyError(error.response.data.message);
+        })
     }
 
     return (
@@ -42,6 +68,7 @@ export default function UpdateLinksForm({ className = '' }) {
                         className="mt-1 block w-full"
                         autoComplete="github_url"
                         onChange={(e) => setData('github_url', e.target.value)}
+                        disabled={isProcessing}
                     />
 
                     <InputError message={errors.instagram_url} className="mt-2" />
@@ -58,6 +85,7 @@ export default function UpdateLinksForm({ className = '' }) {
                         className="mt-1 block w-full"
                         autoComplete="linkedin_url"
                         onChange={(e) => setData('linkedin_url', e.target.value)}
+                        disabled={isProcessing}
                     />
 
                     <InputError message={errors.linkedin_url} className="mt-2" />
@@ -74,6 +102,7 @@ export default function UpdateLinksForm({ className = '' }) {
                         className="mt-1 block w-full"
                         autoComplete="x_url"
                         onChange={(e) => setData('x_url', e.target.value)}
+                        disabled={isProcessing}
                     />
 
                     <InputError message={errors.x_url} className="mt-2" />
@@ -90,6 +119,7 @@ export default function UpdateLinksForm({ className = '' }) {
                         className="mt-1 block w-full"
                         autoComplete="instagram_url"
                         onChange={(e) => setData('instagram_url', e.target.value)}
+                        disabled={isProcessing}
                     />
 
                     <InputError message={errors.instagram_url} className="mt-2" />
@@ -106,15 +136,16 @@ export default function UpdateLinksForm({ className = '' }) {
                         className="mt-1 block w-full"
                         autoComplete="website_url"
                         onChange={(e) => setData('website_url', e.target.value)}
+                        disabled={isProcessing}
                     />
 
                     <InputError message={errors.website_url} className="mt-2" />
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                    <PrimaryButton disabled={isProcessing}>Save</PrimaryButton>
 
-                    <Transition
+                    {/* <Transition
                         show={recentlySuccessful}
                         enter="transition ease-in-out"
                         enterFrom="opacity-0"
@@ -122,7 +153,7 @@ export default function UpdateLinksForm({ className = '' }) {
                         leaveTo="opacity-0"
                     >
                         <p className="text-sm text-gray-600">Saved.</p>
-                    </Transition>
+                    </Transition> */}
                 </div>
             </form>
         </section>
