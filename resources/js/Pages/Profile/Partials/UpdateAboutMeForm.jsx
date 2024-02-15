@@ -71,7 +71,7 @@ export default function UpdateAboutMeForm({ className = '' }) {
                 <div className="flex items-center gap-4">
                     <PrimaryButton disabled={isProcessing}>Save</PrimaryButton>
 
-                    <Transition
+                    {/* <Transition
                         show={recentlySuccessful}
                         enter="transition ease-in-out"
                         enterFrom="opacity-0"
@@ -79,7 +79,7 @@ export default function UpdateAboutMeForm({ className = '' }) {
                         leaveTo="opacity-0"
                     >
                         <p className="text-sm text-gray-600">Saved.</p>
-                    </Transition>
+                    </Transition> */}
                 </div>
             </form>
         </section>
