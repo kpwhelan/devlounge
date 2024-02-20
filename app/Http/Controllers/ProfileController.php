@@ -35,8 +35,6 @@ class ProfileController extends Controller {
     public function update(ProfileUpdateRequest $request): JsonResponse {
         $request->user()->fill($request->validated());
 
-        return $this->errorResponse($this::GENERIC_ERROR_RESPONSE, 500);
-
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }

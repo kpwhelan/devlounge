@@ -7,6 +7,7 @@ import UpdateLinksForm from './Partials/UpdateLinksForm';
 import UpdateAboutMeForm from './Partials/UpdateAboutMeForm';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
+import UpdateTags from './Partials/UpdateTags';
 
 export default function Edit({ auth, mustVerifyEmail, status }) {
     const notifySuccess = (message) => toast.success("Successfully Updated!");
@@ -43,6 +44,14 @@ export default function Edit({ auth, mustVerifyEmail, status }) {
 
                     <div className="w-[45%] p-4 sm:p-8 bg-primary-color shadow sm:rounded-lg">
                         <UpdateLinksForm
+                            notifyError={notifyError}
+                            notifySuccess={notifySuccess}
+                            className='max-w-xl'
+                        />
+                    </div>
+
+                    <div className="w-[45%] p-4 sm:p-8 bg-primary-color shadow sm:rounded-lg">
+                        <UpdateTags
                             notifyError={notifyError}
                             notifySuccess={notifySuccess}
                             className='max-w-xl'
