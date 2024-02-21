@@ -33,7 +33,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user()->with(['followers', 'following'])->first(),
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),

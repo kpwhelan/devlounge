@@ -13,8 +13,4 @@ class ProgrammingLanguage extends Model
     protected $fillable = [
         'name'
     ];
-
-    public function test() {
-        $language = ProgrammingLanguage::find(1);
-    }
 }

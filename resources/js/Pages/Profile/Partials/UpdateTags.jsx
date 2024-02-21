@@ -1,12 +1,17 @@
-import { usePage } from "@inertiajs/react";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import { useForm, usePage } from "@inertiajs/react";
 import axios from "axios";
 import { useState } from "react";
 
-export default function UpdateTags({ notifySuccess, notifyError }) {
+export default function UpdateTags({ notifySuccess, notifyError, className = '' }) {
     const user = usePage().props.auth.user;
+    console.log(user)
     const [isProcessing, setIsProcessing] = useState(false);
+    const [isAddingTags, setIsAddingTags] = useState(false);
 
-    const { data, setData, patch, errors } = useForm({
+    const { data, setData, errors } = useForm({
         tags: user.tags,
     });
 
@@ -41,26 +46,26 @@ export default function UpdateTags({ notifySuccess, notifyError }) {
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium">Update About Me</h2>
+                <h2 className="text-lg font-medium">Update Tags</h2>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="about_me" value="About Me" />
+                    <InputLabel htmlFor="tags" value="Tags" />
 
                     <textarea
-                        id="about_me"
-                        name="about_me"
+                        id="tags"
+                        name="tags"
                         type='textarea'
-                        value={data.about_me}
+                        value={data.tags}
                         className="block h-72 overflow-scroll p-2.5 w-full text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500"
-                        autoComplete="about_me"
+                        autoComplete="tags"
                         disabled={isProcessing}
 
-                        onChange={(e) => setData('about_me', e.target.value)}
+                        onChange={(e) => setData('tags', e.target.value)}
                     />
 
-                    <InputError message={errors.about_me} className="mt-2" />
+                    <InputError message={errors.tags} className="mt-2" />
                 </div>
 
                 <div className="flex items-center gap-4">
