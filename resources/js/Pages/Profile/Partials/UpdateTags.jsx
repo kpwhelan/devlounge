@@ -1,6 +1,7 @@
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
+import Tag from "@/Components/Tag";
 import { useForm, usePage } from "@inertiajs/react";
 import axios from "axios";
 import { useState } from "react";
@@ -53,7 +54,9 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
                 <div>
                     <InputLabel htmlFor="tags" value="Tags" />
 
-                    <textarea
+                    <Tag />
+
+                    {/* <textarea
                         id="tags"
                         name="tags"
                         type='textarea'
@@ -65,7 +68,7 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
                         onChange={(e) => setData('tags', e.target.value)}
                     />
 
-                    <InputError message={errors.tags} className="mt-2" />
+                    <InputError message={errors.tags} className="mt-2" /> */}
                 </div>
 
                 <div className="flex items-center gap-4">

@@ -56,8 +56,6 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    // protected $with = ['following', 'followers'];
-
     public function followers(): HasManyThrough {
         return $this->hasManyThrough(User::class, Follow::class, 'followed_id', 'id', 'id', 'follower_id');
     }
@@ -65,7 +63,7 @@ class User extends Authenticatable
         return $this->HasManyThrough(User::class, Follow::class, 'follower_id', 'id', 'id', 'followed_id');
     }
 
-    public function tags(): HasMany {
-        return $this->hasMany(Taggable::class, 'taggable_id');
+    public function tags() {
+
     }
 }
