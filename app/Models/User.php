@@ -10,10 +10,12 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Tags\HasTags;
+use Spatie\Tags\Tag;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, HasTags, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -59,11 +61,12 @@ class User extends Authenticatable
     public function followers(): HasManyThrough {
         return $this->hasManyThrough(User::class, Follow::class, 'followed_id', 'id', 'id', 'follower_id');
     }
+
     public function following(): HasManyThrough {
         return $this->HasManyThrough(User::class, Follow::class, 'follower_id', 'id', 'id', 'followed_id');
     }
 
-    public function tags() {
-
+    public function tags(): HasManyThrough {
+        return $this->HasManyThrough(Tag::class, User::class, 'tag_id', 'id', 'id', 'taggable_id');
     }
 }

@@ -49,6 +49,10 @@ class ProfileController extends Controller {
         return $this->successResponse('Successfully updated info!', [$request->user()]);
     }
 
+    public function updateTags(Request $request): JsonResponse {
+        dd($request);
+    }
+
     /**
      * Delete the user's account.
      */

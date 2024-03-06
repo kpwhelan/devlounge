@@ -53,9 +53,9 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium">{user.first_name} {user.last_name}</h2>
+                <h2 className="text-lg font-xl">{user.first_name} {user.last_name}</h2>
 
-                <p className="mt-1 text-sm">
+                <p className="mt-1 text-lg">
                     Update all your account info here.
                 </p>
             </header>

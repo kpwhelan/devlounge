@@ -2,6 +2,7 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
 import Tag from "@/Components/Tag";
+import TextInput from "@/Components/TextInput";
 import { useForm, usePage } from "@inertiajs/react";
 import axios from "axios";
 import { useState } from "react";
@@ -10,9 +11,13 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
     const user = usePage().props.auth.user;
     console.log(user)
     const [isProcessing, setIsProcessing] = useState(false);
-    const [isAddingTags, setIsAddingTags] = useState(false);
+    const [isEditingTags, setIsEditingTags] = useState(false);
 
-    const { data, setData, errors } = useForm({
+    const toggleSetIsEditingTags = () => {
+        isEditingTags ? setIsEditingTags(false) : setIsEditingTags(true);
+    }
+
+    const { data, setData, errors, isDirty } = useForm({
         tags: user.tags,
     });
 
@@ -24,7 +29,7 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
 
         setIsProcessing(true);
 
-        axios.patch(route('profile.edit'), {
+        axios.patch(route('profile.update.tags'), {
             about_me: data.about_me
         })
         .then(res => {
@@ -47,32 +52,46 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium">Update Tags</h2>
+                <h2 className="text-xl font-medium">Update Tags</h2>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="tags" value="Tags" />
+                    {/* <InputLabel htmlFor="tags" value="Tags" /> */}
 
-                    <Tag />
+                    <Tag className="bg-gray-600 max-w-fit rounded-xl px-2" />
 
-                    {/* <textarea
-                        id="tags"
-                        name="tags"
-                        type='textarea'
-                        value={data.tags}
-                        className="block h-72 overflow-scroll p-2.5 w-full text-md text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-gray-500 focus:border-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-gray-500 dark:focus:border-gray-500"
-                        autoComplete="tags"
-                        disabled={isProcessing}
+                    {isEditingTags &&
+                        <div>
+                            <div className="bg-white">
+                                {/* <Tag className={`bg-gray-600 max-w-fit rounded-xl px-2 animate-pulse ${isEditingTags ? 'flex justify-between items-center' : ''}`} />
+                                <Tag className="bg-gray-600 max-w-fit rounded-xl px-2 animate-pulse" />
+                                <Tag className="bg-gray-600 max-w-fit rounded-xl px-2 animate-pulse" /> */}
+                            </div>
+                            <div>
+                                <InputLabel htmlFor="new_tags" value="Add new tags" />
 
-                        onChange={(e) => setData('tags', e.target.value)}
-                    />
+                                <TextInput
+                                    id="new_tags"
+                                    placeholder="e.g.: #php #javascript"
+                                    name="new_tags"
+                                    value={data.tags}
+                                    className="mt-1 block w-full"
+                                    autoComplete="new_tags"
+                                    onChange={(e) => setData('tags', e.target.value)}
+                                    disabled={isProcessing}
+                                />
 
-                    <InputError message={errors.tags} className="mt-2" /> */}
+                                <InputError message={errors.tags} className="mt-2" />
+                            </div>
+                        </div>
+                    }
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={isProcessing}>Save</PrimaryButton>
+                    {isEditingTags && <PrimaryButton disabled={isProcessing}>Save Tags</PrimaryButton>}
+
+                    {!isEditingTags && <PrimaryButton onClick={toggleSetIsEditingTags} disabled={isProcessing}>Edit Tags</PrimaryButton>}
 
                     {/* <Transition
                         show={recentlySuccessful}
