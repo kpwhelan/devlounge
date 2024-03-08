@@ -9,7 +9,7 @@ import { useState } from "react";
 
 export default function UpdateTags({ notifySuccess, notifyError, className = '' }) {
     const user = usePage().props.auth.user;
-    console.log(user)
+    console.log(user.tags)
     const [isProcessing, setIsProcessing] = useState(false);
     const [isEditingTags, setIsEditingTags] = useState(false);
 
@@ -59,7 +59,11 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
                 <div>
                     {/* <InputLabel htmlFor="tags" value="Tags" /> */}
 
-                    <Tag className="bg-gray-600 max-w-fit rounded-xl px-2" />
+                    {!isEditingTags && 
+                        user.tags.map(tag => {
+                            return <Tag tag={tag} />
+                        })
+                    }
 
                     {isEditingTags &&
                         <div>
