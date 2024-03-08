@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use App\Traits\ApiResponseTrait;
+use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
@@ -51,6 +53,23 @@ class ProfileController extends Controller {
 
     public function updateTags(Request $request): JsonResponse {
         dd($request);
+    }
+
+    public function detachTag(Request $request): JsonResponse {
+        try {
+            $user = User::find(Auth::user()->id);
+
+            $user->detachTag($request->tag['name']['en']);
+
+
+
+            return $this->successResponse('Tag removed successfully!');
+        } catch(Exception $e) {
+            Log::error($e);
+
+            return $this->errorResponse($this::GENERIC_ERROR_RESPONSE);
+        }
+        
     }
 
     /**
