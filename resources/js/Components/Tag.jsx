@@ -9,8 +9,9 @@ export default function Tag({ tag, isEditingTags, className }) {
             <Typography variant="small">
                 {tag.name['en']}
             </Typography>
-
-            <FontAwesomeIcon color="white" icon={faCircleXmark} opacity={1} size='1x' className='hover:cursor-pointer' />
+            {isEditingTags &&
+                <FontAwesomeIcon color="white" icon={faCircleXmark} opacity={1} size='1x' className='hover:cursor-pointer ml-1' />
+            }
         </div>
     );
 }

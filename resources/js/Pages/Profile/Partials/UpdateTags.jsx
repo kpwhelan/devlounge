@@ -9,7 +9,6 @@ import { useState } from "react";
 
 export default function UpdateTags({ notifySuccess, notifyError, className = '' }) {
     const user = usePage().props.auth.user;
-    console.log(user.tags)
     const [isProcessing, setIsProcessing] = useState(false);
     const [isEditingTags, setIsEditingTags] = useState(false);
 
@@ -18,7 +17,7 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
     }
 
     const { data, setData, errors, isDirty } = useForm({
-        tags: user.tags,
+        tags: '',
     });
 
     const submit = (e) => {
@@ -30,7 +29,7 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
         setIsProcessing(true);
 
         axios.patch(route('profile.update.tags'), {
-            about_me: data.about_me
+            tags: data.tags
         })
         .then(res => {
             setIsProcessing(false);
@@ -60,17 +59,19 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
                     {/* <InputLabel htmlFor="tags" value="Tags" /> */}
 
                     {!isEditingTags && 
-                        user.tags.map(tag => {
-                            return <Tag tag={tag} />
-                        })
+                        <div className="flex">
+                            {user.tags.map(tag => {
+                                return <Tag tag={tag} isEditingTags={isEditingTags} className="m-1"/>
+                            })}
+                        </div>
                     }
 
                     {isEditingTags &&
                         <div>
-                            <div className="bg-white">
-                                {/* <Tag className={`bg-gray-600 max-w-fit rounded-xl px-2 animate-pulse ${isEditingTags ? 'flex justify-between items-center' : ''}`} />
-                                <Tag className="bg-gray-600 max-w-fit rounded-xl px-2 animate-pulse" />
-                                <Tag className="bg-gray-600 max-w-fit rounded-xl px-2 animate-pulse" /> */}
+                            <div className="bg-white flex p-2 rounded-md">
+                               {user.tags.map(tag => {
+                                return <Tag tag={tag} isEditingTags={isEditingTags} className={`bg-gray-600 max-w-fit rounded-xl px-2 mx-1 animate-pulse ${isEditingTags ? 'flex justify-between items-center' : ''}`} />
+                               })}
                             </div>
                             <div>
                                 <InputLabel htmlFor="new_tags" value="Add new tags" />
