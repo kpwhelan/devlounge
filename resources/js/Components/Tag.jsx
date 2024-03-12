@@ -3,19 +3,7 @@ import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import { Typography } from "@material-tailwind/react";
 import axios from "axios";
 
-export default function Tag({ tag, isEditingTags, className }) {
-
-    const deleteTag = () => {
-        axios.put(route('profile.detach.tag'), {
-            tag: tag,
-        })
-        .then(res  => {
-            console.log(res)
-        })
-        .catch(error => {
-            console.log(error)
-        })
-    }
+export default function Tag({ tag, isEditingTags, className, detachTag }) {
 
     return (
         <div className={className}>
@@ -24,7 +12,7 @@ export default function Tag({ tag, isEditingTags, className }) {
                 {tag.name['en']}
             </Typography>
             {isEditingTags &&
-                <FontAwesomeIcon onClick={deleteTag} color="white" icon={faCircleXmark} opacity={1} size='1x' className='hover:cursor-pointer ml-1' />
+                <FontAwesomeIcon onClick={() => detachTag(tag)} color="white" icon={faCircleXmark} opacity={1} size='1x' className='hover:cursor-pointer ml-1' />
             }
         </div>
     );

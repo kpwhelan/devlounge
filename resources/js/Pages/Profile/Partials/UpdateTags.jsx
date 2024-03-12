@@ -5,12 +5,15 @@ import Tag from "@/Components/Tag";
 import TextInput from "@/Components/TextInput";
 import { useForm, usePage } from "@inertiajs/react";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function UpdateTags({ notifySuccess, notifyError, className = '' }) {
-    const user = usePage().props.auth.user;
+    let user = usePage().props.auth.user;
     const [isProcessing, setIsProcessing] = useState(false);
     const [isEditingTags, setIsEditingTags] = useState(false);
+    const [tags, setTags] = useState(user.tags);
+
+    // console.log(user)
 
     const toggleSetIsEditingTags = () => {
         isEditingTags ? setIsEditingTags(false) : setIsEditingTags(true);
@@ -19,6 +22,25 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
     const { data, setData, errors, isDirty } = useForm({
         tags: '',
     });
+
+    const detachTag = (tag) => {
+        axios.put(route('profile.detach.tag'), {
+            tag: tag,
+        })
+        .then(()  => {
+            let updatedTags = tags.splice(user.tags.indexOf(tag))
+            setTags(updatedTags);
+        })
+        .catch(error => {
+            if (error.response.data.errors) {
+                for (const [key, value] of Object.entries(error.response.data.errors)) {
+                    errors[key] = value;
+                }
+            }
+
+            notifyError(error.response.data.message);
+        })
+    }
 
     const submit = (e) => {
         e.preventDefault();
@@ -60,8 +82,8 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
 
                     {!isEditingTags && 
                         <div className="flex">
-                            {user.tags.map(tag => {
-                                return <Tag tag={tag} isEditingTags={isEditingTags} className="m-1"/>
+                            {tags.map((tag, index) => {
+                                return <Tag key={index} tag={tag} isEditingTags={isEditingTags} className="m-1"/>
                             })}
                         </div>
                     }
@@ -69,8 +91,8 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
                     {isEditingTags &&
                         <div>
                             <div className="bg-white flex p-2 rounded-md">
-                               {user.tags.map(tag => {
-                                return <Tag tag={tag} isEditingTags={isEditingTags} className={`bg-gray-600 max-w-fit rounded-xl px-2 mx-1 animate-pulse ${isEditingTags ? 'flex justify-between items-center' : ''}`} />
+                               {tags.map((tag, index) => {
+                                return <Tag key={index} tag={tag} detachTag={detachTag} isEditingTags={isEditingTags} className={`bg-gray-600 max-w-fit rounded-xl px-2 mx-1 animate-pulse ${isEditingTags ? 'flex justify-between items-center' : ''}`} />
                                })}
                             </div>
                             <div>
