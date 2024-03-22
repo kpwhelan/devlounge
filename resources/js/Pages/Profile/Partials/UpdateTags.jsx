@@ -4,6 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import Tag from "@/Components/Tag";
 import TextInput from "@/Components/TextInput";
 import { useForm, usePage } from "@inertiajs/react";
+import { Card, List } from "@material-tailwind/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -12,6 +13,7 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
     const [isProcessing, setIsProcessing] = useState(false);
     const [isEditingTags, setIsEditingTags] = useState(false);
     const [tags, setTags] = useState(user.tags);
+    const [tagSearchResults, setTagSearchResults] = useState([]);
 
     // console.log(user)
 
@@ -22,6 +24,14 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
     const { data, setData, errors, isDirty } = useForm({
         tags: '',
     });
+
+    const handleNewTagInput = (e) => {
+        // setData(e.target.value)
+
+        axios.get(route('profile.search.tags'))
+            .then(res => {console.log(res.data.stuff)})
+            .catch(error => {console.log(error)})
+    }
 
     const detachTag = (tag) => {
         axios.put(route('profile.detach.tag'), {
@@ -80,7 +90,7 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
                 <div>
                     {/* <InputLabel htmlFor="tags" value="Tags" /> */}
 
-                    {!isEditingTags && 
+                    {!isEditingTags &&
                         <div className="flex">
                             {tags.map((tag, index) => {
                                 return <Tag key={index} tag={tag} isEditingTags={isEditingTags} className="m-1"/>
@@ -105,9 +115,15 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
                                     value={data.tags}
                                     className="mt-1 block w-full"
                                     autoComplete="new_tags"
-                                    onChange={(e) => setData('tags', e.target.value)}
+                                    onChange={(e) => handleNewTagInput(e)}
                                     disabled={isProcessing}
                                 />
+
+                                <Card>
+                                    <List>
+
+                                    </List>
+                                </Card>
 
                                 <InputError message={errors.tags} className="mt-2" />
                             </div>

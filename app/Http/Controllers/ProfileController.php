@@ -51,9 +51,11 @@ class ProfileController extends Controller {
         return $this->successResponse('Successfully updated info!', [$request->user()]);
     }
 
-    public function updateTags(Request $request): JsonResponse {
-        dd($request);
-    }
+    // public function updateTags(Request $request): JsonResponse {
+    //     $tag_string = $request['tags'];
+
+
+    // }
 
     public function detachTag(Request $request): JsonResponse {
         try {
@@ -61,15 +63,13 @@ class ProfileController extends Controller {
 
             $user->detachTag($request->tag['name']['en']);
 
-
-
             return $this->successResponse('Tag removed successfully!');
         } catch(Exception $e) {
             Log::error($e);
 
             return $this->errorResponse($this::GENERIC_ERROR_RESPONSE);
         }
-        
+
     }
 
     /**
@@ -91,5 +91,11 @@ class ProfileController extends Controller {
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function searchTags(Request $request) {
+        $search_term = $request['search_term'];
+
+        return response()->json(['stuff' => $search_term]);
     }
 }
