@@ -4,7 +4,7 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import Tag from "@/Components/Tag";
 import TextInput from "@/Components/TextInput";
 import { useForm, usePage } from "@inertiajs/react";
-import { Card, List } from "@material-tailwind/react";
+import { Card, List, ListItem } from "@material-tailwind/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -14,22 +14,36 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
     const [isEditingTags, setIsEditingTags] = useState(false);
     const [tags, setTags] = useState(user.tags);
     const [tagSearchResults, setTagSearchResults] = useState([]);
+    const [tempTag, setTempTag] = useState('');
 
-    // console.log(user)
+    // console.log(route('profile.search.tags'))
 
     const toggleSetIsEditingTags = () => {
         isEditingTags ? setIsEditingTags(false) : setIsEditingTags(true);
     }
 
     const { data, setData, errors, isDirty } = useForm({
-        tags: '',
+        tags: [],
+        tempThing: ''
     });
 
-    const handleNewTagInput = (e) => {
-        // setData(e.target.value)
+    const handleTagSelect = (tag) => {
+        setTagSearchResults([]);
+console.log(tag)
 
-        axios.get(route('profile.search.tags'))
-            .then(res => {console.log(res.data.stuff)})
+        setData('tags', [...data.tags, tag]);
+        console.log(data.tags)
+    }
+
+    const handleNewTagInput = (e) => {
+        const searchTerm = e.target.value;
+
+        setTempTag(searchTerm);
+
+        axios.get(route('profile.search.tags', searchTerm))
+            .then(res => {
+                setTagSearchResults(res.data.tags)
+            })
             .catch(error => {console.log(error)})
     }
 
@@ -112,18 +126,23 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
                                     id="new_tags"
                                     placeholder="e.g.: #php #javascript"
                                     name="new_tags"
-                                    value={data.tags}
+                                    value={tempTag}
                                     className="mt-1 block w-full"
                                     autoComplete="new_tags"
                                     onChange={(e) => handleNewTagInput(e)}
                                     disabled={isProcessing}
                                 />
 
-                                <Card>
-                                    <List>
-
-                                    </List>
-                                </Card>
+                                {(tagSearchResults && tagSearchResults.length >= 1) &&
+                                    <Card className="mt-2">
+                                        <List>
+                                            <ListItem selected={true} onClick={() => handleTagSelect(tempTag)} className="p-1">{tempTag}</ListItem>
+                                            {tagSearchResults.map(result => {
+                                                return <ListItem key={result.id} onClick={() => handleTagSelect(result.name["en"])}  className="p-1">{result.name["en"]}</ListItem>
+                                            })}
+                                        </List>
+                                    </Card> 
+                                }
 
                                 <InputError message={errors.tags} className="mt-2" />
                             </div>

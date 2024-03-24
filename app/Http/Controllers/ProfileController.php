@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Spatie\Tags\Tag;
 
 class ProfileController extends Controller {
     use ApiResponseTrait;
@@ -93,9 +94,10 @@ class ProfileController extends Controller {
         return Redirect::to('/');
     }
 
-    public function searchTags(Request $request) {
-        $search_term = $request['search_term'];
+    public function searchTags($search_term) {
+        // $search_term = $request['search_term'];
+        $results = Tag::where('name', 'LIKE', "%{$search_term}%")->get();
 
-        return response()->json(['stuff' => $search_term]);
+        return response()->json(['tags' => $results]);
     }
 }
