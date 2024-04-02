@@ -28,23 +28,22 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
     });
 
     const handleTagSelect = (tag) => {
-        setTagSearchResults([]);
+        axios.put(route('profile.add.tag'), {
+            tag: tag
+        })
+        .then((res) => {
+            setTempTag('');
+            setTags(res.data.data.user.tags);
+        })
+        .catch(error => {
+            if (error.response.data.errors) {
+                for (const [key, value] of Object.entries(error.response.data.errors)) {
+                    errors[key] = value;
+                }
+            }
 
-
-        setData('tags', [...data.tags, tag]);
-        console.log(data.tags)
-    }
-
-    const handleNewTagInput = (e) => {
-        const searchTerm = e.target.value;
-
-        setTempTag(searchTerm);
-
-        axios.get(route('profile.search.tags', searchTerm))
-            .then(res => {
-                setTagSearchResults(res.data.tags)
-            })
-            .catch(error => {console.log(error)})
+            notifyError(error.response.data.message);
+        })
     }
 
     const detachTag = (tag) => {
@@ -63,6 +62,26 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
 
             notifyError(error.response.data.message);
         })
+    }
+
+    const handleNewTagInput = (e) => {
+        const searchTerm = e.target.value;
+
+        setTempTag(searchTerm);
+
+        axios.get(route('profile.search.tags', searchTerm))
+            .then(res => {
+                setTagSearchResults(res.data.tags)
+            })
+            .catch(error => {
+                if (error.response.data.errors) {
+                    for (const [key, value] of Object.entries(error.response.data.errors)) {
+                        errors[key] = value;
+                    }
+                }
+
+                notifyError(error.response.data.message);
+            })
     }
 
     const submit = (e) => {
@@ -132,11 +151,11 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
                                     disabled={isProcessing}
                                 />
 
-                                {(tagSearchResults && tagSearchResults.length >= 1) &&
+                                {tempTag &&
                                     <Card className="mt-2">
                                         <List>
-                                            <ListItem selected={true} onClick={() => handleTagSelect(tempTag)} className="p-1">{tempTag}</ListItem>
-                                            {tagSearchResults.map(result => {
+                                            <ListItem selected={true} onClick={() => handleTagSelect(tempTag)} className="p-1 underline">{tempTag}</ListItem>
+                                            { (tagSearchResults && tagSearchResults.length >= 1) && tagSearchResults.map(result => {
                                                 return <ListItem key={result.id} onClick={() => handleTagSelect(result.name["en"])}  className="p-1">{result.name["en"]}</ListItem>
                                             })}
                                         </List>
@@ -150,7 +169,7 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
                 </div>
 
                 <div className="flex items-center gap-4">
-                    {isEditingTags && <PrimaryButton disabled={isProcessing}>Save Tags</PrimaryButton>}
+                    {isEditingTags && <PrimaryButton disabled={isProcessing} onClick={toggleSetIsEditingTags}>Done Editing</PrimaryButton>}
 
                     {!isEditingTags && <PrimaryButton onClick={toggleSetIsEditingTags} disabled={isProcessing}>Edit Tags</PrimaryButton>}
 

@@ -58,12 +58,26 @@ class ProfileController extends Controller {
 
     // }
 
+    public function addTag(Request $request): JsonResponse {
+        try {
+            $user = User::with(['followers', 'following', 'tags'])->find(Auth::user()->id);
+
+            $user->attachTag($request->tag);
+            $user->refresh();
+
+            return $this->successResponse('Tag added successfully!', ['user' => $user]);
+        } catch(Exception $e) {
+            Log::error($e);
+
+            return $this->errorResponse($this::GENERIC_ERROR_RESPONSE);
+        }
+    }
+
     public function detachTag(Request $request): JsonResponse {
         try {
             $user = User::with(['followers', 'following', 'tags'])->find(Auth::user()->id);
 
             $user->detachTag($request->tag['name']['en']);
-
             $user->refresh();
 
             return $this->successResponse('Tag removed successfully!', ['user' => $user]);

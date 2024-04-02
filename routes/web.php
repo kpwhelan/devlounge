@@ -41,7 +41,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile', [ProfileController::class, 'updateTags'])->name('profile.update.tags');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::put('/profile', [ProfileController::class, 'detachTag'])->name('profile.detach.tag');
+    Route::put('/profile/detach/tag', [ProfileController::class, 'detachTag'])->name('profile.detach.tag');
+    Route::put('/profile/add/tag', [ProfileController::class, 'addTag'])->name('profile.add.tag');
     Route::get('/profile/{searchTerm}', [ProfileController::class, 'searchTags'])->name('profile.search.tags');
 });
 
