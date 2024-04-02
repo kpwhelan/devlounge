@@ -4,14 +4,18 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Tags\HasTags;
+use Spatie\Tags\Tag;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, HasTags, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -54,13 +58,11 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    protected $with = ['following', 'followers'];
-
-    public function followers(): HasMany {
-        return $this->hasMany(Follow::class, 'user_id');
+    public function followers(): HasManyThrough {
+        return $this->hasManyThrough(User::class, Follow::class, 'followed_id', 'id', 'id', 'follower_id');
     }
 
-    public function following(): HasMany {
-        return $this->hasMany(Follow::class, 'follower_id');
+    public function following(): HasManyThrough {
+        return $this->HasManyThrough(User::class, Follow::class, 'follower_id', 'id', 'id', 'followed_id');
     }
 }

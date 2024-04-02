@@ -23,7 +23,7 @@ export default function UpdateAboutMeForm({ className = '' }) {
 
         setIsProcessing(true);
 
-        axios.patch(route('profile.edit'), {
+        axios.patch(route('profile.update'), {
             about_me: data.about_me
         })
         .then(res => {
@@ -46,7 +46,7 @@ export default function UpdateAboutMeForm({ className = '' }) {
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium">Update About Me</h2>
+                <h2 className="text-xl font-medium">Update About Me</h2>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">

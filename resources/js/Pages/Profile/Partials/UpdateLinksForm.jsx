@@ -53,7 +53,7 @@ export default function UpdateLinksForm({ className = '', notifySuccess, notifyE
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium">Update Links</h2>
+                <h2 className="text-xl font-medium">Update Links</h2>
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
