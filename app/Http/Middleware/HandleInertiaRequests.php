@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -34,7 +35,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 // 'user' => $request->user()->with(['followers', 'following'])->first(),
-                'user' => $request->user() ? $request->user()->with(['followers', 'following', 'tags'])->first() : $request->user(),
+                'user' => $request->user() ? User::with(['followers', 'following', 'tags'])->find($request->user()->id) : $request->user(),
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),
