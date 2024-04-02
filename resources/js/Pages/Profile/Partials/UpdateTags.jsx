@@ -29,7 +29,7 @@ export default function UpdateTags({ notifySuccess, notifyError, className = '' 
 
     const handleTagSelect = (tag) => {
         setTagSearchResults([]);
-console.log(tag)
+
 
         setData('tags', [...data.tags, tag]);
         console.log(data.tags)
@@ -51,9 +51,8 @@ console.log(tag)
         axios.put(route('profile.detach.tag'), {
             tag: tag,
         })
-        .then(()  => {
-            let updatedTags = tags.splice(user.tags.indexOf(tag))
-            setTags(updatedTags);
+        .then((res)  => {
+            setTags(res.data.data.user.tags);
         })
         .catch(error => {
             if (error.response.data.errors) {
@@ -107,7 +106,7 @@ console.log(tag)
                     {!isEditingTags &&
                         <div className="flex">
                             {tags.map((tag, index) => {
-                                return <Tag key={index} tag={tag} isEditingTags={isEditingTags} className="m-1"/>
+                                return <Tag key={index} tag={tag} isEditingTags={isEditingTags} className="m-1 border-2 rounded-lg p-1"/>
                             })}
                         </div>
                     }
@@ -116,7 +115,7 @@ console.log(tag)
                         <div>
                             <div className="bg-white flex p-2 rounded-md">
                                {tags.map((tag, index) => {
-                                return <Tag key={index} tag={tag} detachTag={detachTag} isEditingTags={isEditingTags} className={`bg-gray-600 max-w-fit rounded-xl px-2 mx-1 animate-pulse ${isEditingTags ? 'flex justify-between items-center' : ''}`} />
+                                return <Tag key={index} tag={tag} detachTag={detachTag} isEditingTags={isEditingTags} className={`bg-gray-600 max-w-fit rounded-lg p-1 mx-1 animate-pulse ${isEditingTags ? 'flex justify-between items-center' : ''}`} />
                                })}
                             </div>
                             <div>
@@ -141,7 +140,7 @@ console.log(tag)
                                                 return <ListItem key={result.id} onClick={() => handleTagSelect(result.name["en"])}  className="p-1">{result.name["en"]}</ListItem>
                                             })}
                                         </List>
-                                    </Card> 
+                                    </Card>
                                 }
 
                                 <InputError message={errors.tags} className="mt-2" />

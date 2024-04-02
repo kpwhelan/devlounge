@@ -60,11 +60,13 @@ class ProfileController extends Controller {
 
     public function detachTag(Request $request): JsonResponse {
         try {
-            $user = User::find(Auth::user()->id);
+            $user = User::with(['followers', 'following', 'tags'])->find(Auth::user()->id);
 
             $user->detachTag($request->tag['name']['en']);
 
-            return $this->successResponse('Tag removed successfully!');
+            $user->refresh();
+
+            return $this->successResponse('Tag removed successfully!', ['user' => $user]);
         } catch(Exception $e) {
             Log::error($e);
 
