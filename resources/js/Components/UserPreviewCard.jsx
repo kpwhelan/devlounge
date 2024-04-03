@@ -10,16 +10,26 @@ import {
   import { faUser } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { followUser } from "@/utils/FollowUtils";
+import Tag from "./Tag";
 
 export default function UserPreviewCard({ user, auth }) {
     const [isFollowing, setIsFollowing] = useState(false);
 
     useEffect(() => {
-        const inFollowingList = auth.user.following.some(entry => entry.user_id === user.id);
+        const inFollowingList = auth.user.following.some(entry => entry.id === user.id);
 
         if (inFollowingList) setIsFollowing(true);
     }, []);
+
+    const followUser = (user) => {
+        axios.post(route('follow-user'), {
+            user_id: user.id,
+        })
+        .then(res => {
+            if (res.data.success) setIsFollowing(true);
+        })
+        .catch(error => console.log(err))
+      }
 
     return (
         <Card className="mt-4 w-[80%]">
@@ -40,6 +50,11 @@ export default function UserPreviewCard({ user, auth }) {
                     <Typography>
                     {user.title}
                     </Typography>
+                    <div className="flex">
+                        {user.tags.map((tag, index) => {
+                            return <Tag key={index} tag={tag} className="m-1 border-2 text-white rounded-lg px-2 py-1 bg-primary-color"/>
+                        })}
+                    </div>
                 </div>
             </CardBody>
 

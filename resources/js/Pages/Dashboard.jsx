@@ -90,34 +90,6 @@ export default function Dashboard({ auth }) {
                     <p className='mb-4 whitespace-pre-line'>{auth.user.about_me}</p>
                 </div>
             </div>
-
-            {showEditLinksModal &&
-                <EditLinksModal
-                    toggleSetShowEditLinksModal={toggleSetShowEditLinksModal}
-                    showEditLinksModal={showEditLinksModal}
-                    auth={auth}
-                    notifyError={notifyError}
-                    notifySuccess={notifySuccess}
-                />
-            }
-
-            {showEditAboutModal &&
-                <EditAboutModal
-                    toggleSetShowEditAboutModal={toggleSetShowEditAboutModal}
-                    showEditAboutModal={showEditAboutModal}
-                    auth={auth}
-                    notifyError={notifyError}
-                    notifySuccess={notifySuccess}
-                />
-            }
-
-            {showUploadPictureModal &&
-                <UploadProfilePictureModal
-                    toggleSetShowUploadPictureModal={toggleSetShowUploadPictureModal}
-                    showUploadPictureModal={showUploadPictureModal}
-                 />
-            }
-
         </AuthenticatedLayout>
     );
 }

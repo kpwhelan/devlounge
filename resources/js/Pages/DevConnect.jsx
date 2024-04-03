@@ -6,12 +6,6 @@ import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 export default function DevConnectPage({ auth }) {
-    console.log(auth.user.following)
-    const { ref, inView, entry } = useInView({
-        /* Optional options */
-        threshold: 0,
-      });
-
       const [users, setUsers] = useState([]);
       const [hasMore, setHasMore] = useState(true);
       const [pageNumber, setPageNumber] = useState(1);
@@ -35,6 +29,7 @@ export default function DevConnectPage({ auth }) {
             loadUsers()
         }
       }
+
     return(
         <AuthenticatedLayout
             user={auth.user}
