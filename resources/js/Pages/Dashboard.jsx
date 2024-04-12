@@ -4,12 +4,9 @@ import { faUser} from '@fortawesome/free-regular-svg-icons';
 import { faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
-import EditLinksModal from '@/Components/Modals/EditLinksModal';
 import { Avatar, Typography } from '@material-tailwind/react';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import EditAboutModal from '@/Components/Modals/EditAboutModal';
-import UploadProfilePictureModal from '@/Components/Modals/UploadProfilePictureModal';
 import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function Dashboard({ auth }) {
