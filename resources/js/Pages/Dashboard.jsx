@@ -4,12 +4,9 @@ import { faUser} from '@fortawesome/free-regular-svg-icons';
 import { faXTwitter } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
-import EditLinksModal from '@/Components/Modals/EditLinksModal';
 import { Avatar, Typography } from '@material-tailwind/react';
 import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer, toast } from 'react-toastify';
-import EditAboutModal from '@/Components/Modals/EditAboutModal';
-import UploadProfilePictureModal from '@/Components/Modals/UploadProfilePictureModal';
 import PrimaryButton from '@/Components/PrimaryButton';
 
 export default function Dashboard({ auth }) {
@@ -90,34 +87,6 @@ export default function Dashboard({ auth }) {
                     <p className='mb-4 whitespace-pre-line'>{auth.user.about_me}</p>
                 </div>
             </div>
-
-            {showEditLinksModal &&
-                <EditLinksModal
-                    toggleSetShowEditLinksModal={toggleSetShowEditLinksModal}
-                    showEditLinksModal={showEditLinksModal}
-                    auth={auth}
-                    notifyError={notifyError}
-                    notifySuccess={notifySuccess}
-                />
-            }
-
-            {showEditAboutModal &&
-                <EditAboutModal
-                    toggleSetShowEditAboutModal={toggleSetShowEditAboutModal}
-                    showEditAboutModal={showEditAboutModal}
-                    auth={auth}
-                    notifyError={notifyError}
-                    notifySuccess={notifySuccess}
-                />
-            }
-
-            {showUploadPictureModal &&
-                <UploadProfilePictureModal
-                    toggleSetShowUploadPictureModal={toggleSetShowUploadPictureModal}
-                    showUploadPictureModal={showUploadPictureModal}
-                 />
-            }
-
         </AuthenticatedLayout>
     );
 }

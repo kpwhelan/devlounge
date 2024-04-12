@@ -1,20 +1,32 @@
+import ProfileComponent from "@/Components/ProfileComponent";
 import UserPreviewCard from "@/Components/UserPreviewCard";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useInView } from "react-intersection-observer";
 
 export default function DevConnectPage({ auth }) {
-    console.log(auth.user.following)
-    const { ref, inView, entry } = useInView({
-        /* Optional options */
-        threshold: 0,
-      });
-
       const [users, setUsers] = useState([]);
       const [hasMore, setHasMore] = useState(true);
       const [pageNumber, setPageNumber] = useState(1);
+      const [isViewingProfile, setIsViewingProfile] = useState(false);
+      const [userForProfile, setUserForProfile] = useState([]);
+
+      const toggleSetIsViewingProfile = () => {
+        isViewingProfile ? setIsViewingProfile(false) : setIsViewingProfile(true);
+      }
+
+      const handleShowProfile = (user) => {
+        if (userForProfile.length == 0) toggleSetIsViewingProfile();
+
+        setUserForProfile(user);
+      }
+
+      const handleCloseProfile = () => {
+        setIsViewingProfile(false);
+
+        setUserForProfile([]);
+      }
 
       const loadUsers = () => {
         axios.get(`${route('load-users')}?page=${pageNumber}`)
@@ -35,6 +47,7 @@ export default function DevConnectPage({ auth }) {
             loadUsers()
         }
       }
+
     return(
         <AuthenticatedLayout
             user={auth.user}
@@ -43,12 +56,18 @@ export default function DevConnectPage({ auth }) {
 
         <Head title="Dev Connect" />
 
-        <div className="w-[60%] mx-auto h-screen">
-            <div className="h-screen overflow-scroll" onScroll={handleScroll}>
-                {users.map(user => {
-                    return <UserPreviewCard user={user} auth={auth} />
-                })}
+        <div className="flex">
+            <div className={`w-[60%] h-screen ${isViewingProfile ? '' : 'mx-auto'}`}>
+                <div className="h-screen overflow-y-scroll no-scrollbar" onScroll={handleScroll}>
+                    {users.map(user => {
+                        return <UserPreviewCard key={user.id} user={user} auth={auth} handleShowProfile={handleShowProfile} highlight={userForProfile.id == user.id} />
+                    })}
+                </div>
             </div>
+
+            {isViewingProfile &&
+                <ProfileComponent handleCloseProfile={handleCloseProfile} user={userForProfile} className={'text-black w-[40%] h-screen p-4'} />
+            }
         </div>
 
         </AuthenticatedLayout>

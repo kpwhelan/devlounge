@@ -16,11 +16,11 @@ class FollowController extends Controller {
     public function followUser(Request $request): JsonResponse {
         $follow = new Follow();
 
-        $follow->user_id = $request->user_id;
+        $follow->followed_id = $request->user_id;
         $follow->follower_id = Auth::user()->id;
 
         $follow_record_exists = Follow::where([
-            'user_id' => $request->user_id,
+            'followed_id' => $request->user_id,
             'follower_id' => Auth::user()->id
         ])->exists();
 
