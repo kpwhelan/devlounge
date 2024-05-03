@@ -27,6 +27,7 @@ export default function UserPreviewCard({ user, auth, handleShowProfile, highlig
         })
         .then(res => {
             if (res.data.success) setIsFollowing(true);
+            user.followers.push(auth.user.id);
         })
         .catch()
       }
