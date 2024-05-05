@@ -24,8 +24,10 @@ export default function UserPreviewCard({ user, auth, handleShowProfile, highlig
     const followUser = () => {
         axios.post(route('follow-user', user.id))
         .then(res => {
-            if (res.data.success) setIsFollowing(true);
-            user.followers.push(auth.user.id);
+            if (res.data.success) {
+                setIsFollowing(true);
+                user.follower_count = res.data.data.updated_follower_count;
+            } 
         })
         .catch()
       }
@@ -33,7 +35,11 @@ export default function UserPreviewCard({ user, auth, handleShowProfile, highlig
       const unfollowUser = () => {
         axios.post(route('unfollow-user', user.id))
         .then(res => {
-            if (res.data.success) setIsFollowing(false);
+            if (res.data.success) {
+                setIsFollowing(false);
+                user.follower_count = res.data.data.updated_follower_count;
+            }
+
         })
       }
 
@@ -62,7 +68,7 @@ export default function UserPreviewCard({ user, auth, handleShowProfile, highlig
                                     {user.title}
                                 </Typography>
                                 <Typography variant="small">
-                                    {Intl.NumberFormat(undefined, {notation: 'compact'}).format(user.followers.length)} {user.followers.length > 1 || user.followers.length == 0 ? 'followers' : 'follower'}
+                                    {Intl.NumberFormat(undefined, {notation: 'compact'}).format(user.follower_count)} {user.follower_count > 1 || user.follower_count == 0 ? 'followers' : 'follower'}
                                 </Typography>
                             </div>
                             <div className="flex">
