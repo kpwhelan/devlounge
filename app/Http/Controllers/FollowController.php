@@ -26,14 +26,16 @@ class FollowController extends Controller {
             'follower_id' => Auth::user()->id
         ])->exists();
 
-        $user = User::find($user_id);
+        $user_to_follow = User::find($user_id);
+        $user = User::find(Auth::user()->id);
 
         if ($follow_record_exists) return $this->errorResponse('Looks like you\'re already following this user...', 409);
 
         try {
-            DB::transaction(function() use($follow, $user) {
+            DB::transaction(function() use($follow, $user_to_follow, $user) {
                 $follow->save();
-                $user->increment('follower_count');
+                $user_to_follow->increment('follower_count');
+                $user->increment('following_count');
             });
         } catch(QueryException $e) {
             Log::error($e->getMessage());
@@ -41,7 +43,10 @@ class FollowController extends Controller {
             return $this->errorResponse($this::GENERIC_ERROR_RESPONSE, 500);
         }
 
-        return $this->successResponse('Followed!', ['updated_follower_count' => $user->follower_count]);
+        return $this->successResponse('Followed!', [
+            'updated_follower_count' => $user_to_follow->follower_count,
+            'updated_following_count' => $user->following_count
+        ]);
     }
 
     public function unfollowUser(int $user_id): JsonResponse {
@@ -51,17 +56,22 @@ class FollowController extends Controller {
                 'follower_id' => Auth::user()->id
             ])->first();
 
-            $user = User::find($user_id);
+            $user_to_unfollow = User::find($user_id);
+            $user = User::find(Auth::user()->id);
 
-            DB::transaction(function() use($follow_record, $user) {
+            DB::transaction(function() use($follow_record, $user_to_unfollow, $user) {
                 $follow_record->delete();
-                $user->decrement('follower_count');
+                $user_to_unfollow->decrement('follower_count');
+                $user->decrement('following_count');
             });
         } catch (QueryException $e) {
             Log::error($e->getMessage());
             return $this->errorResponse($this::GENERIC_ERROR_RESPONSE, 500);
         }
 
-        return $this->successResponse('Unfollowed!', ['updated_follower_count' => $user->follower_count]);
+        return $this->successResponse('Unfollowed!', [
+            'updated_follower_count' => $user_to_unfollow->follower_count,
+            'updated_following_count' => $user->following_count
+        ]);
     }
 }
