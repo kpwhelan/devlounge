@@ -13,14 +13,14 @@ use Illuminate\Support\Facades\Log;
 class FollowController extends Controller {
     use ApiResponseTrait;
 
-    public function followUser(Request $request): JsonResponse {
+    public function followUser(int $user_id): JsonResponse {
         $follow = new Follow();
 
-        $follow->followed_id = $request->user_id;
+        $follow->followed_id = $user_id;
         $follow->follower_id = Auth::user()->id;
 
         $follow_record_exists = Follow::where([
-            'followed_id' => $request->user_id,
+            'followed_id' => $user_id,
             'follower_id' => Auth::user()->id
         ])->exists();
 
@@ -37,14 +37,14 @@ class FollowController extends Controller {
         return $this->successResponse('Followed!', []);
     }
 
-    public function unfollowUser(Request $request): JsonResponse {
+    public function unfollowUser(int $user_id): JsonResponse {
         try {
             $follow_record = Follow::where([
-                'user_id' => $request->user_id,
+                'followed_id' => $user_id,
                 'follower_id' => Auth::user()->id
-            ]);
+            ])->first();
 
-            $follow_record->delete();
+            if ($follow_record)  $follow_record->delete();
         } catch (QueryException $e) {
             Log::error($e->getMessage());
             return $this->errorResponse($this::GENERIC_ERROR_RESPONSE, 500);

@@ -55,8 +55,7 @@ Route::prefix('dev-connect')->middleware('auth')->group(function() {
     Route::get('/load-users', [DevConnectController::class, 'index'])->name('load-users');
 });
 
-Route::prefix('follow')->middleware('auth')->group(function() {
-    Route::post('/', [FollowController::class, 'followUser'])->name('follow-user');
-});
+Route::post('/follow/{user_id}', [FollowController::class, 'followUser'])->middleware('auth')->name('follow-user');
+Route::post('/unfollow/{user_id}', [FollowController::class, 'unfollowUser'])->middleware('auth')->name('unfollow-user');
 
 require __DIR__.'/auth.php';

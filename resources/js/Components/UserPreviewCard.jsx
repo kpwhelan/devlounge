@@ -21,15 +21,20 @@ export default function UserPreviewCard({ user, auth, handleShowProfile, highlig
         if (inFollowingList) setIsFollowing(true);
     }, []);
 
-    const followUser = (user) => {
-        axios.post(route('follow-user'), {
-            user_id: user.id,
-        })
+    const followUser = () => {
+        axios.post(route('follow-user', user.id))
         .then(res => {
             if (res.data.success) setIsFollowing(true);
             user.followers.push(auth.user.id);
         })
         .catch()
+      }
+
+      const unfollowUser = () => {
+        axios.post(route('unfollow-user', user.id))
+        .then(res => {
+            if (res.data.success) setIsFollowing(false);
+        })
       }
 
     return (
@@ -70,8 +75,8 @@ export default function UserPreviewCard({ user, auth, handleShowProfile, highlig
                 </CardBody>
 
                 <CardFooter>
-                    {!isFollowing && <Button onClick={() => followUser(user)}>Follow</Button>}
-                    {isFollowing && <Button onClick={followUser}>UnFollow</Button>}
+                    {!isFollowing && <Button onClick={followUser}>Follow</Button>}
+                    {isFollowing && <Button onClick={unfollowUser}>UnFollow</Button>}
                 </CardFooter>
             </div>
         </Card>
