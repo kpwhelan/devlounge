@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DevConnectController;
 use App\Http\Controllers\FollowController;
+use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Foundation\Application;
@@ -53,6 +54,11 @@ Route::prefix('user')->middleware('auth')->group(function() {
 
 Route::prefix('dev-connect')->middleware('auth')->group(function() {
     Route::get('/load-users', [DevConnectController::class, 'index'])->name('load-users');
+});
+
+//PUT MIDDLEWARE BACK!!!
+Route::prefix('posts')->group(function() {
+    Route::post('/', [PostsController::class, 'create'])->name('posts.create');
 });
 
 Route::post('/follow/{user_id}', [FollowController::class, 'followUser'])->middleware('auth')->name('follow-user');
