@@ -17,8 +17,10 @@ module.exports = withMT({
         extend: {
             colors: {
                 'primary-color': '#404040',
-                'secondary-color': '#FFFFFF',
-                'accent-color': '#5f7d54',
+                
+                'devlounge-accent': '#ed4617',
+                'devlounge-secondary': '#181e27',
+                'devlounge-background': '#0e1217',
             },
             fontFamily: {
             sans: ['Nunito', ...defaultTheme.fontFamily.sans],

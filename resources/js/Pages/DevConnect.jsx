@@ -51,7 +51,7 @@ export default function DevConnectPage({ auth }) {
     return(
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Dashboard</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">DevConnect</h2>}
         >
 
         <Head title="Dev Connect" />
