@@ -17,12 +17,13 @@ class FollowController extends Controller {
     public function followUser(int $user_id): JsonResponse {
         $follow = new Follow();
 
-        $follow->followed_id = $user_id;
-        $follow->follower_id = Auth::user()->id;
+        $follow->followable_id = $user_id;
+        $follow->user_id = Auth::user()->id;
+        $follow->followable_type = User::class;
 
         $follow_record_exists = Follow::where([
-            'followed_id' => $user_id,
-            'follower_id' => Auth::user()->id
+            'followable_id' => $user_id,
+            'user_id' => Auth::user()->id
         ])->exists();
 
         $user_to_follow = User::find($user_id);
@@ -51,8 +52,8 @@ class FollowController extends Controller {
     public function unfollowUser(int $user_id): JsonResponse {
         try {
             $follow_record = Follow::where([
-                'followed_id' => $user_id,
-                'follower_id' => Auth::user()->id
+                'followable_id' => $user_id,
+                'user_id' => Auth::user()->id
             ])->first();
 
             $user_to_unfollow = User::find($user_id);
@@ -73,6 +74,6 @@ class FollowController extends Controller {
             'updated_following_count' => $user->following_count
         ]);
 
-        
+
     }
 }

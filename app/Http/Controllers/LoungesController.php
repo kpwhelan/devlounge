@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoungeRequest;
 use App\Models\Lounge;
 use App\Traits\ApiResponseTrait;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -14,7 +12,7 @@ class LoungesController extends Controller {
     use ApiResponseTrait;
 
     public function index(): Response {
-        $lounges = Lounge::paginate(20);
+        $lounges = Lounge::latest()->paginate(20);
 
         return Inertia::render('Lounges', [
             'lounges' => $lounges

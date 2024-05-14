@@ -11,7 +11,7 @@ import { useForm } from "@inertiajs/react";
 import { faCircleXmark } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
 
-export default function NewLoungeModal({ showNewLoungeModal, toggleSetShowNewLoungeModal }) {
+export default function NewLoungeModal({ showNewLoungeModal, toggleSetShowNewLoungeModal, addNewLounge }) {
     const [isProcessing, setIsProcessing] = useState(false);
 
     const { data, setData, processing, errors, setError, post, reset } = useForm({
@@ -33,10 +33,11 @@ export default function NewLoungeModal({ showNewLoungeModal, toggleSetShowNewLou
             description: data.description
         })
         .then(res => {
-            toggleSetIsProcessing(false);
             if (res.data.success) {
                 toggleSetIsProcessing(false);
                 toggleSetShowNewLoungeModal(false);
+
+                addNewLounge(res.data.data[0]);
             }
         })
         .catch(error => {

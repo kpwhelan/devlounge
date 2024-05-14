@@ -4,13 +4,22 @@ import PrimaryButton from "@/Components/PrimaryButton";
 import LoungesContainer from "@/Containers/LoungesContainer";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Lounges({ auth, lounges }) {
     const [showNewLoungeModal, setShowNewLoungeModal] = useState(false);
+    const [theLounges, setTheLounges] = useState([]);
+
+    useEffect(() => {
+        setTheLounges(lounges.data);
+    }, []);
 
     const toggleSetShowNewLoungeModal = () => {
         showNewLoungeModal ? setShowNewLoungeModal(false) : setShowNewLoungeModal(true);
+    }
+
+    const addNewLounge = (lounge) => {
+        setTheLounges(lounges => [lounge, ...lounges]);
     }
 
     return (
@@ -21,19 +30,17 @@ export default function Lounges({ auth, lounges }) {
 
             <Head title="Lounges" />
 
-            
-
             <LoungesContainer className='w-[60%] mx-auto mt-4'>
                 <PrimaryButton onClick={toggleSetShowNewLoungeModal} className="mb-2 bg-devlounge-accent">
                     New Lounge
                 </PrimaryButton>
 
-                {lounges.data.map(lounge => {
+                {theLounges.map(lounge => {
                     return <LoungePreviewCard key={lounge.id} lounge={lounge} />
                 })}
             </LoungesContainer>
 
-            <NewLoungeModal showNewLoungeModal={showNewLoungeModal} toggleSetShowNewLoungeModal={toggleSetShowNewLoungeModal} />
+            <NewLoungeModal addNewLounge={addNewLounge} showNewLoungeModal={showNewLoungeModal} toggleSetShowNewLoungeModal={toggleSetShowNewLoungeModal} />
         </AuthenticatedLayout>
     );
 }

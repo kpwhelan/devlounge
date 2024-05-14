@@ -12,7 +12,7 @@ export default function LoungePreviewCard({ lounge }) {
         <Card className="bg-devlounge-secondary mt-4">
             <CardBody>
                 <Typography variant="h5" color="white">{lounge.name}</Typography>
-                <Typography variant="h6" color="white">{lounge.description}</Typography>
+                <Typography className={lounge.description ? '' : 'italic'} variant="h6" color="white" >{lounge.description ? lounge.description : 'No description'}</Typography>
                 <Typography variant="paragraph" color="white">Members - {lounge.follower_count}</Typography>
                 <Typography variant="small" color="white">Lounge opened - {new Date(lounge.created_at).toLocaleDateString("en-US")}</Typography>
             </CardBody>

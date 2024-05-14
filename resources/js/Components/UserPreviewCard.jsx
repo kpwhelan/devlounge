@@ -6,8 +6,8 @@ import {
     Button,
     Avatar,
   } from "@material-tailwind/react";
-  import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-  import { faUser } from "@fortawesome/free-regular-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Tag from "./Tag";
@@ -27,7 +27,7 @@ export default function UserPreviewCard({ user, auth, handleShowProfile, highlig
             if (res.data.success) {
                 setIsFollowing(true);
                 user.follower_count = res.data.data.updated_follower_count;
-            } 
+            }
         })
         .catch()
       }
@@ -39,8 +39,8 @@ export default function UserPreviewCard({ user, auth, handleShowProfile, highlig
                 setIsFollowing(false);
                 user.follower_count = res.data.data.updated_follower_count;
             }
-
         })
+        .catch();
       }
 
     return (
