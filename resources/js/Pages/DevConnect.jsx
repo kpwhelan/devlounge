@@ -66,7 +66,7 @@ export default function DevConnectPage({ auth }) {
             </div>
 
             {isViewingProfile &&
-                <ProfileComponent handleCloseProfile={handleCloseProfile} user={userForProfile} className={'text-black w-[40%] h-screen p-4'} />
+                <ProfileComponent handleCloseProfile={handleCloseProfile} user={userForProfile} className={'text-white bg-devlounge-secondary w-[40%] h-screen p-4 rounded-lg mt-4'} />
             }
         </div>
 
