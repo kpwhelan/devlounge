@@ -44,17 +44,17 @@ export default function UserPreviewCard({ user, auth, handleShowProfile, highlig
       }
 
     return (
-        <Card className='mt-4 w-[70%] mx-auto'>
-            <div className={`flex justify-between items-center w-full ${highlight ? 'border-4 border-accent-color rounded-lg' : ''}`}>
+        <Card className='mt-4 w-[70%] mx-auto bg-devlounge-secondary'>
+            <div className={`flex justify-between items-center w-full ${highlight ? 'border-4 border-devlounge-accent rounded-lg' : ''}`}>
                 <CardBody className="flex">
-                    <div className="hover:cursor-pointer">
+                    <div className="hover:cursor-pointer mr-1">
                         {user.profile_picture_url &&
-                            <Avatar src={auth.user.profile_picture_url} size="xl"/>
+                            <Avatar src={auth.user.profile_picture_url} size="lg"/>
                         }
 
                         {!user.profile_picture_url &&
                             <div className='py-3 px-4 mb-2 border-white border-4 max-w-fit rounded-full'>
-                                <FontAwesomeIcon icon={faUser} size='3x' />
+                                <FontAwesomeIcon icon={faUser} size='2x' />
                             </div>
                         }
                     </div>
@@ -81,8 +81,8 @@ export default function UserPreviewCard({ user, auth, handleShowProfile, highlig
                 </CardBody>
 
                 <CardFooter>
-                    {!isFollowing && <Button onClick={followUser}>Follow</Button>}
-                    {isFollowing && <Button onClick={unfollowUser}>UnFollow</Button>}
+                    {!isFollowing && <Button className="bg-devlounge-accent hover:bg-devlounge-background hover:text-devlounge-accent" onClick={followUser}>Follow</Button>}
+                    {isFollowing && <Button className="bg-devlounge-accent" onClick={unfollowUser}>UnFollow</Button>}
                 </CardFooter>
             </div>
         </Card>

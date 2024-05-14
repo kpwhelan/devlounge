@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\DevConnectController;
 use App\Http\Controllers\FollowController;
+use App\Http\Controllers\LoungesController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UsersController;
+use App\Models\Lounge;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -37,6 +39,12 @@ Route::get('/dev-connect', function() {
     return Inertia::render('DevConnect');
 })->middleware(['auth'])->name('dev-connect');
 
+Route::prefix('/lounges')->middleware('auth')->group(function() {
+    Route::get('/', [LoungesController::class, 'index'])->name('lounges');
+    Route::post('/', [LoungesController::class, 'store'])->name('lounges.store');
+    Route::get('/{id}', [LoungesController::class, 'show'])->name('lounges.show');
+});
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -57,7 +65,7 @@ Route::prefix('dev-connect')->middleware('auth')->group(function() {
 });
 
 //PUT MIDDLEWARE BACK!!!
-Route::prefix('posts')->group(function() {
+Route::prefix('posts')->middleware('auth')->group(function() {
     Route::post('/', [PostsController::class, 'create'])->name('posts.create');
 });
 

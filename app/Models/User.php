@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -58,15 +61,27 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function followers(): HasManyThrough {
-        return $this->hasManyThrough(User::class, Follow::class, 'followed_id', 'id', 'id', 'follower_id');
+    // public function followers(): HasManyThrough {
+    //     return $this->hasManyThrough(User::class, Follow::class, 'followed_id', 'id', 'id', 'follower_id');
+    // }
+
+    public function followers(): MorphToMany {
+        return $this->morphToMany(Follow::class, 'followable_id', 'follows');
     }
 
-    public function following(): HasManyThrough {
-        return $this->HasManyThrough(User::class, Follow::class, 'follower_id', 'id', 'id', 'followed_id');
+    public function following(): MorphToMany {
+        return $this->morthToMany(Follow::class, 'user_id');
     }
+
+    // public function following(): HasManyThrough {
+    //     return $this->HasManyThrough(User::class, Follow::class, 'follower_id', 'id', 'id', 'followed_id');
+    // }
 
     public function posts(): HasMany {
         return $this->hasMany(Post::class);
+    }
+
+    public function profile(): HasOne {
+        return $this->hasOne(Profile::class);
     }
 }

@@ -72,5 +72,7 @@ class FollowController extends Controller {
             'updated_follower_count' => $user_to_unfollow->follower_count,
             'updated_following_count' => $user->following_count
         ]);
+
+        
     }
 }
