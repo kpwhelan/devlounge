@@ -1,4 +1,4 @@
-export default function LoungesContainer({ className, children }) {
+export default function FeedContainer({ className, children }) {
     return (
         <div className={className}>
             {children}

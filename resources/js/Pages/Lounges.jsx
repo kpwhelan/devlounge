@@ -1,7 +1,7 @@
 import LoungePreviewCard from "@/Components/LoungePreviewCard";
 import NewLoungeModal from "@/Components/Modals/NewLoungeModal";
 import PrimaryButton from "@/Components/PrimaryButton";
-import LoungesContainer from "@/Containers/LoungesContainer";
+import FeedContainer from "@/Containers/FeedContainer";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { useEffect, useState } from "react";
@@ -30,7 +30,7 @@ export default function Lounges({ auth, lounges }) {
 
             <Head title="Lounges" />
 
-            <LoungesContainer className='w-[60%] mx-auto mt-4'>
+            <FeedContainer className='w-[40%] mx-auto mt-4'>
                 <PrimaryButton onClick={toggleSetShowNewLoungeModal} className="mb-2 bg-devlounge-accent">
                     New Lounge
                 </PrimaryButton>
@@ -38,7 +38,7 @@ export default function Lounges({ auth, lounges }) {
                 {theLounges.map(lounge => {
                     return <LoungePreviewCard key={lounge.id} lounge={lounge} />
                 })}
-            </LoungesContainer>
+            </FeedContainer>
 
             <NewLoungeModal addNewLounge={addNewLounge} showNewLoungeModal={showNewLoungeModal} toggleSetShowNewLoungeModal={toggleSetShowNewLoungeModal} />
         </AuthenticatedLayout>

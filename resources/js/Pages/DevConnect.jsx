@@ -1,5 +1,6 @@
 import ProfileComponent from "@/Components/ProfileComponent";
 import UserPreviewCard from "@/Components/UserPreviewCard";
+import FeedContainer from "@/Containers/FeedContainer";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import axios from "axios";
@@ -57,13 +58,17 @@ export default function DevConnectPage({ auth }) {
         <Head title="Dev Connect" />
 
         <div className="flex">
-            <div className={`w-[60%] h-screen ${isViewingProfile ? '' : 'mx-auto'}`}>
+            <div className={`w-[40%] ${isViewingProfile ? '' : 'mx-auto'}`}>
                 <div className="h-screen overflow-y-scroll no-scrollbar" onScroll={handleScroll}>
                     {users.map(user => {
                         return <UserPreviewCard key={user.id} user={user} auth={auth} handleShowProfile={handleShowProfile} highlight={userForProfile.id == user.id} />
                     })}
                 </div>
             </div>
+
+            {/* <FeedContainer className='w-[40%] mx-auto mt-4'>
+
+            </FeedContainer> */}
 
             {isViewingProfile &&
                 <ProfileComponent handleCloseProfile={handleCloseProfile} user={userForProfile} className={'text-white bg-devlounge-secondary w-[40%] h-screen p-4 rounded-lg mt-4'} />

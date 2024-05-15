@@ -38,7 +38,7 @@ export default function Dashboard({ auth }) {
 
             <ToastContainer />
 
-            <div className="my-10 mx-auto py-10 px-10 bg-primary-color max-w-[40%] rounded-lg">
+            <div className="my-10 mx-auto py-10 px-10 bg-devlounge-secondary max-w-[40%] rounded-lg">
                 <div className='mb-8 flex items-center justify-start'>
                     <div className='w-fit text-center'>
                         {auth.user.profile_picture_url &&

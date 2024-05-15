@@ -44,7 +44,7 @@ export default function UserPreviewCard({ user, auth, handleShowProfile, highlig
       }
 
     return (
-        <Card className='mt-4 w-[70%] mx-auto bg-devlounge-secondary'>
+        <Card className='mt-4 mx-auto bg-devlounge-secondary'>
             <div className={`flex justify-between items-center w-full ${highlight ? 'border-4 border-devlounge-accent rounded-lg' : ''}`}>
                 <CardBody className="flex">
                     <div className="hover:cursor-pointer mr-1">
@@ -61,13 +61,13 @@ export default function UserPreviewCard({ user, auth, handleShowProfile, highlig
                     <div className="flex items-center">
                         <div>
                             <div className="hover:cursor-pointer">
-                                <Typography variant="h5" color="blue-gray" onClick={() => handleShowProfile(user)}>
+                                <Typography variant="h5" color="white" onClick={() => handleShowProfile(user)}>
                                     {user.first_name} {user.last_name}
                                 </Typography>
-                                <Typography variant="h6">
+                                <Typography variant="h6" color="white">
                                     {user.title}
                                 </Typography>
-                                <Typography variant="small">
+                                <Typography variant="small" color="white">
                                     {Intl.NumberFormat(undefined, {notation: 'compact'}).format(user.follower_count)} {user.follower_count > 1 || user.follower_count == 0 ? 'followers' : 'follower'}
                                 </Typography>
                             </div>
